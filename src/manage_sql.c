@@ -16133,6 +16133,18 @@ check_db_scanners ()
          " '', 0, %d, NULL, NULL, m_now (), m_now ());",
          SCANNER_TYPE_CVE);
 
+  if (sql_int ("SELECT count(*) FROM scanners WHERE uuid = '%s';",
+             SCANNER_UUID_OPENVASD_DEFAULT) == 0)
+    {
+      sql ("INSERT INTO scanners"
+           " (uuid, owner, name, host, port, type, ca_pub, credential,"
+           "  creation_time, modification_time)"
+           " VALUES ('" SCANNER_UUID_OPENVASD_DEFAULT "', NULL, 'OpenVASD',"
+           " 'https://localhost', 443, %d, NULL, NULL, m_now (),"
+           " m_now ());",
+           SCANNER_TYPE_OPENVASD);
+    }
+
   return 0;
 }
 
